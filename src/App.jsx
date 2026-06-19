@@ -6,8 +6,17 @@ import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
-  const [filteredData, setFiltered] = useState([]);
+  const [filteredData, setData2] = useState([]);
   const [input, setInput] = useState("");
+  const handleChange = (e) => {
+    const input1 = e.target.value;
+    setInput(e.target.value);
+    setData2(
+      data.filter((val) =>
+        val.title.toLowerCase().startsWith(input1.toLowerCase()),
+      ),
+    );
+  };
   useEffect(() => {
     async function getData() {
       const response = await fetch(
@@ -15,14 +24,15 @@ function App() {
       );
       const data2 = await response.json();
       setData(data2);
+      setData2(data2);
     }
     getData();
   }, []);
   return (
     <>
-      <input type="text" />
+      <input type="text" onChange={handleChange} value={input} />
       <ul>
-        {data.map((val) => (
+        {filteredData.map((val) => (
           <li>{val.title}</li>
         ))}
       </ul>
